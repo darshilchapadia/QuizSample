@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot"
   },
-  "author": "Darshil",  
+  "author": "Darshil",
   "dependencies": {
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
@@ -15,6 +15,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "jquery": "^3.3.1",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "webpack": "^3.10.0",
