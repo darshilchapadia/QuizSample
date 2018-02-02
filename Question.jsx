@@ -1,5 +1,5 @@
 import React from 'react';
-// import data from './data.js';
+import moment from 'moment';
 
 class Question extends React.Component {
 	constructor(props) {
@@ -8,7 +8,6 @@ class Question extends React.Component {
 		this.state = {
 			currentQuestion:1,
 			correctAnswer:0,
-			questionData: props.data[0],
 			finished: false
 		}
 		this.onPrevClick = this.onPrevClick.bind(this)
@@ -19,10 +18,14 @@ class Question extends React.Component {
    	}
    	render() {
    		if(this.state.finished){
-   			return <p>
-   				Your Total score is: {this.state.correctAnswer}
+   			var second = moment().diff(parseInt(this.props.startTime),'seconds');
+   			console.log(second)
+   			var totalTime = parseInt(second/60) + " Minutes "+ (second%60) + " Seconds"
+   			return <div>
+   				<p>Your Total score is: {this.state.correctAnswer}</p>
+   				<p>Your Total time is: {totalTime}</p>
    				<button onClick={this.startQuiz}>Start Again</button>
-   			</p>
+   			</div>
    		}
    		var questionData = this.data[this.state.currentQuestion-1]
    		questionData = JSON.parse(JSON.stringify(questionData))
@@ -50,35 +53,49 @@ class Question extends React.Component {
          	</div>
       	);
    	}
+   	componentWillReceiveProps(nextProps){
+   		this.data = nextProps.data;
+   		this.state = {
+			currentQuestion:1,
+			correctAnswer:0,
+			finished: false
+		}
+   	}
    	onPrevClick(){
    		var obj = {}
    		obj.currentQuestion = this.state.currentQuestion - 1
-   		obj.questionData = this.data[obj.currentQuestion]
    		this.setState(obj)
    	}
    	onNextClick(){
    		var obj = {}
-   		if(this.state.selectedOption == this.state.questionData.correct_answer){
+   		var questionData = this.data[this.state.currentQuestion-1]
+   		if(this.state.selectedOption == questionData.correct_answer){
    			obj.correctAnswer = this.state.correctAnswer + 1
    		}
    		obj.currentQuestion = this.state.currentQuestion + 1
-   		obj.questionData = this.data[obj.currentQuestion]
    		this.setState(obj)
    	}
    	onSelectOption(e){
    		this.setState({selectedOption:e.target.value})
    	}
    	onFinishQuiz(){
-   		this.setState({finished:true})
+   		var questionData = this.data[this.state.currentQuestion-1]
+   		if(this.state.selectedOption == questionData.correct_answer){
+   			this.setState({finished:true, correctAnswer: this.state.correctAnswer + 1})
+   		}
+   		else{
+   			this.setState({finished:true})	
+   		}
    		console.log("Finished..!")
    	}
    	startQuiz(){
-   		this.setState({
-   			currentQuestion:1,
-			correctAnswer:0,
-			questionData: this.props.data[0],
-			finished: false
-		})
+  //  		this.setState({
+  //  			currentQuestion:1,
+		// 	correctAnswer:0,
+		// 	questionData: this.props.data[0],
+		// 	finished: false
+		// })
+		this.props.startQuiz();
    	}
 }
 export default Question;

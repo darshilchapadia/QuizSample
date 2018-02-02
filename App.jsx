@@ -1,6 +1,7 @@
 import React from 'react';
 import Question from './Question.jsx';
 import $ from "jquery";
+import moment from "moment";
 
 class App extends React.Component {
 	constructor() {
@@ -9,10 +10,11 @@ class App extends React.Component {
 			quizStarted:false,
 		}
 		this.onStartClick = this.onStartClick.bind(this)
+		this.startQuiz = this.startQuiz.bind(this)
    }
    render() {
 	   	if(this.state.quizStarted){
-	   		return <Question data={this.state.data}/>
+	   		return <Question data={this.state.data} startTime={moment().format('x')} startQuiz={this.startQuiz}/>
 	   	}
       	return (
          	<div>
@@ -24,9 +26,20 @@ class App extends React.Component {
    		this.setState({quizStarted: true})
    }
    componentWillMount(){
+   		this.getData()
+   }	
+   startQuiz(){
+   		this.getData(true)
+   }
+   getData(start){
    		$.getJSON('https://opentdb.com/api.php?amount=10',function(res){
    			if(res.response_code == 0){
-   				this.setState({data:res.results})
+   				var obj = {}
+   				if(start){
+   					obj.quizStarted = true;
+   				}
+   				obj.data = res.results;
+   				this.setState(obj)
    			}
    		}.bind(this))
    }
