@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-
+   
 class Question extends React.Component {
 	constructor(props) {
+      console.log("Saved")
 		super();
 		this.data = props.data;
 		this.state = {

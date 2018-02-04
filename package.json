@@ -4,7 +4,8 @@
   "description": "Crowdbotics Test Quiz",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server --hot",
+    "pack": "webpack --watch"
   },
   "author": "Darshil",
   "dependencies": {
